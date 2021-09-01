@@ -1,0 +1,16 @@
+{
+  "name": "sensor_broker",
+  "version": "1.0.0",
+  "description": "MQTT Broker as part of SensorPot Framework",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "Raisltin TAO",
+  "license": "PRIVATE",
+  "dependencies": {
+    "aedes": "^0.46.1"
+  }
+}
