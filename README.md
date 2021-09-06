@@ -1,2 +1,7 @@
 # SensorBroker
- MQTT Broker for Sensor Pot
+
+MQTT Broker for Sensor Pot
+
+## Requirements
+
+1. 

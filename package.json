@@ -11,6 +11,9 @@
   "author": "Raisltin TAO",
   "license": "PRIVATE",
   "dependencies": {
-    "aedes": "^0.46.1"
+    "aedes": "^0.46.1",
+    "mongodb": "^4.1.1",
+    "mqemitter-mongodb": "^7.0.4",
+    "aedes-persistence-mongodb": "^8.2.0"
   }
 }
