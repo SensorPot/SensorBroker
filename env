@@ -1,0 +1,12 @@
+# MongoDB Address
+MongoDBAddress= "mongodb://127.0.0.1/SensorPot"
+
+# MongoDB Auth user
+MongoUser = ""
+
+# MongoDB Auth Password
+MongoPassword = ""
+
+# MongoDB Persistence for Aedes TTL packets (Number of seconds)
+TTLPackets = 300
+TTLSubscriptions = 300

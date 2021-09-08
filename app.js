@@ -8,7 +8,7 @@ const mongoPersistence = require('aedes-persistence-mongodb')
 
 //region Configuration
 const port = 1883
-const mongoDBAddress = "mongodb://127.0.0.1/SensorPot";
+const mongoDBAddress = process.env.MongoDBAddress;
 
 /* TODO: USE THE FOLLOWING CODE FOR PRODUCTION BUILD
 
