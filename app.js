@@ -1,6 +1,7 @@
 //region Library
 //Import FS For loading certification
 const fs = require('fs')
+const env = require('dotenv').config()
 //aedes-persistence-mongodb
 const mqEmitter = require('mqemitter-mongodb')
 const mongoPersistence = require('aedes-persistence-mongodb')
@@ -9,6 +10,7 @@ const mongoPersistence = require('aedes-persistence-mongodb')
 //region Configuration
 const port = 1883
 const mongoDBAddress = process.env.MongoDBAddress;
+console.log("MongoDB Address: " + mongoDBAddress)
 
 /* TODO: USE THE FOLLOWING CODE FOR PRODUCTION BUILD
 
