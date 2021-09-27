@@ -1,11 +1,19 @@
+# Broker Port
+BrokerNetPort = 1883
+BrokerTlsPort = 8883
+
+# Broker Certification
+KeyFile = ""
+CertFile = ""
+
 # MongoDB Address
 MongoDBAddress= "mongodb://127.0.0.1/SensorPot"
 
 # MongoDB Auth user
-MongoUser = ""
+MongoDBUser = ""
 
 # MongoDB Auth Password
-MongoPassword = ""
+MongoDBPassword = ""
 
 # MongoDB Persistence for Aedes TTL packets (Number of seconds)
 TTLPackets = 300
