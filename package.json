@@ -15,6 +15,7 @@
     "mongodb": "^4.1.1",
     "mqemitter-mongodb": "^7.0.4",
     "aedes-persistence-mongodb": "^8.2.0",
+    "tracer": "^1.1.5",
     "dotenv": "^10.0.0"
   }
 }
