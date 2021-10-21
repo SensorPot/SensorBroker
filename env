@@ -18,3 +18,7 @@ MongoDBPassword = ""
 # MongoDB Persistence for Aedes TTL packets (Number of seconds)
 TTLPackets = 300
 TTLSubscriptions = 300
+
+# AEDES Configuration
+# Concurrency: Number of Concurrent connections
+concurrency = 10000
