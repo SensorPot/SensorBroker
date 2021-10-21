@@ -1,4 +1,5 @@
 //aedes-persistence-mongodb
+//mqemitter-mongodb
 const logger = require('../utils/logger')
 const mqEmitter = require('mqemitter-mongodb')
 const mongoPersistence = require('aedes-persistence-mongodb')

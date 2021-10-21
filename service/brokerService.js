@@ -3,8 +3,10 @@ const fs = require('fs')
 const logger = require('../utils/logger')
 const aedes = require('../config/aedesConfig')
 //endregion
+
 let brokerServer;
 let port;
+
 //region Configuration
 if (process.env.KeyFile !== "" && process.env.CertFile !== "") {
     logger.showLog("Found local KeyFile and CertFile")
@@ -30,7 +32,7 @@ brokerServer.listen(port, function () {
     logger.showInfo('server started and listening on port ' + port)
 })
 
-//region Aedes Event Listeners
+//region AEDES Event Listeners
 
 aedes.on('client', function (client) {
     logger.showLog('Client Connected: \x1b[33m' + (client ? client.id : client) + '\x1b[0m')
@@ -41,7 +43,6 @@ aedes.on('clientDisconnect', function (client) {
 });
 
 aedes.on('publish', async function (packet, client) {
-    //logger.showLog('Client \x1b[31m' + (client ? client.id : 'BROKER_' + aedes.id) + '\x1b[0m has published ' + packet.payload.toString())
     if (client) {
         logger.showLog('Client \x1b[31m' + client.id + '\x1b[0m has published \x1b[34m' + packet.payload.toString() + '\x1b[0m')
     }
