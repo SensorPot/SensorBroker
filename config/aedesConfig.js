@@ -9,16 +9,16 @@ if (process.env.MongoDBUser !== "") {
 }
 
 //*** Define Aedes Service
-//*** MQ mqEmitter, will save documents in pubsub
+//*** MQ mqEmitter, will save documents in pubsub, otherwise goes to collection: messages
 //*** Persistence: MongoDB Persistence
 const aedesService = require('aedes')({
     id: 'SensorPotBroker',
-    mq: mongo.mqEmitter({
-        url: mongo.mongoDBAddress,
 
-    }),
+    mq: process.env.UseMqEmitter === 'true' ? mongo.mqEmitter({
+        url: mongo.mongoDBAddress,
+    }) : null,
     concurrency: process.env.concurrency,
-    persistence: process.env.MongoDBUser !== "" ? mongo.mongoPersistence({
+    persistence: process.env.UsePersistence === 'true' ? process.env.MongoDBUser !== "" ? mongo.mongoPersistence({
             url: mongo.mongoDBAddress,
             mongoOptions: {
                 auth: {
@@ -38,10 +38,12 @@ const aedesService = require('aedes')({
                 packets: process.env.TTLPackets,
                 subscriptions: process.env.TTLSubscriptions
             }
-        })
+        }) : null
 });
 
+process.env.UseMqEmitter === 'true' ? logger.showInfo("Mq Emitter Initialised") : logger.showInfo("No Mq Emitter Initialised")
+process.env.UsePersistence === 'true' ? logger.showInfo("MongoDB Persistence Initialised") : logger.showInfo("No MongoDB Persistence Started")
 
-logger.showInfo("AEDES Service Started")
+logger.showInfo("AEDES Service Started, internal connecting...")
 
 module.exports = aedesService;
