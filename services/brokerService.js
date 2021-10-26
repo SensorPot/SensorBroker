@@ -2,10 +2,14 @@
 const fs = require('fs')
 const logger = require('../utils/logger')
 const aedes = require('../config/aedesConfig')
+const mongoose = require("./mongoService");
+const MessageModel = require("../models/message");
+
 //endregion
 
 let brokerServer;
 let port;
+let dbConn = mongoose.connection
 
 //region Configuration
 if (process.env.KeyFile !== "" && process.env.CertFile !== "") {
@@ -29,7 +33,7 @@ brokerServer.listen(port, function () {
     } else {
         logger.showInfo('Starting Broker Service in TLS mode')
     }
-    logger.showInfo('server started and listening on port ' + port)
+    logger.showInfo('Server started and listening on port ' + port)
 })
 
 //region AEDES Event Listeners
@@ -44,7 +48,27 @@ aedes.on('clientDisconnect', function (client) {
 
 aedes.on('publish', async function (packet, client) {
     if (client) {
-        logger.showLog('Client \x1b[31m' + client.id + '\x1b[0m has published \x1b[34m' + packet.payload.toString() + '\x1b[0m')
+        try {
+            if (process.env.UseMqEmitter === 'false') {
+                let tempPackage = JSON.parse(packet.payload.toString());
+                const message = new MessageModel(
+                    {
+                        sensorID: tempPackage.sensorID,
+                        timestamp: tempPackage.timestamp,
+                        payload: JSON.stringify(tempPackage.payload)
+                    }
+                )
+                message.save(function (err) {
+                    if (err) {
+                        logger.showError('Saving Document Error: ' + err.message)
+                    }
+                });
+            }
+            logger.showLog('Client \x1b[31m' + client.id + '\x1b[0m has published \x1b[34m' + packet.payload.toString() + '\x1b[0m')
+        } catch (e) {
+            throw e.message;
+        }
+
     }
 })
 
