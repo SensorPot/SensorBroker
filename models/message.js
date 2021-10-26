@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const messageSchema = new mongoose.Schema({
-    sensorID: String,
+    sensorID: Number,
     timestamp: String,
     payload: String
 });
