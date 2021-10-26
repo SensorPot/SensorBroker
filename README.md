@@ -47,21 +47,48 @@ To config an event listener, use the following syntax:
 Copy ```env``` to ```.env``` and change it accordingly
 
 ```text
+# Broker Port
+BrokerNetPort = 1883
+BrokerTlsPort = 8883
+
+# Broker Certification
+KeyFile = ""
+CertFile = ""
+
+# MongoDB Configuration
 # MongoDB Address
-MongoDBAddress = "mongodb://127.0.0.1/SensorPot"
+MongoDBAddress= "mongodb://127.0.0.1/Mini_Twins"
 
 # MongoDB Auth user
-MongoUser = ""
+MongoDBUser = ""
 
 # MongoDB Auth Password
-MongoPassword = ""
+MongoDBPassword = ""
 
-# MongoDB Persistence for Aedes TTL packets(Number of seconds)
+# Mongoose Configuration
+MG_autoIndex = false
+MG_minPoolSize = 100
+MG_maxPoolSize = 1000
+MG_socketTimeoutMS = 30000
+MG_family = 4
+MG_serverSelectionTimeoutMS = 5000
+MG_heartbeatFrequencyMS = 30000
+
+# MongoDB Persistence for Aedes TTL packets (Number of seconds)
 TTLPackets = 300
 TTLSubscriptions = 300
+
+# AEDES Configuration
+# Concurrency: Number of Concurrent connections
+# MqEmitter and Persistence: Used for Aedes Server clusters
+# If Enable MqEmitter and Persistence, the message will be store in MongoDB by default Persistence + Emitter standard.
+# Documents are stored in /pubsub collection
+concurrency = 10000
+UseMqEmitter = false
+UsePersistence = false
 ```
 
-The program initialise MongoDB Persistence as following:
+The program initialise **MongoDB Persistence** as following:
 
 ```JavaScript
 const aedes = require('aedes')({
@@ -82,7 +109,8 @@ const aedes = require('aedes')({
 
 ## Database Structure
 
-The project will automatically create collections, the basic structure is:
+The project will automatically create collections **if user enable MQEmitter and Mongo Persistence**, the basic
+structure is:
 
 * incoming
 * outgoing
@@ -91,7 +119,8 @@ The project will automatically create collections, the basic structure is:
 * subscriptions
 * will
 
-In this project, all payload published by users' sensors are stored in ```pubsub```. The example data is:
+In this project, if user enable **MQEmitter**, all payload published by users' sensors are stored in ```pubsub```. The
+example data is:
 
 ```json
 {
@@ -127,4 +156,15 @@ can be converted to
     "temperature": "33"
   }
 }
+```
+
+If user disable **MQEmitter**, broker will store all the message into MongoDB with following **Mongoose schema**
+directly.
+
+```js
+const messageSchema = new mongoose.Schema({
+    sensorID: Number,
+    timestamp: String,
+    payload: String
+});
 ```
