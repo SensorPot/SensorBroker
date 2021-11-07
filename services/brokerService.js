@@ -54,6 +54,7 @@ aedes.on('publish', async function (packet, client) {
                 const message = new MessageModel(
                     {
                         sensorID: tempPackage.sensorID,
+                        groupID: tempPackage.groupID,
                         timestamp: tempPackage.timestamp,
                         payload: JSON.stringify(tempPackage.payload)
                     }
