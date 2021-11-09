@@ -37,3 +37,7 @@ TTLSubscriptions = 300
 concurrency = 10000
 UseMqEmitter = false
 UsePersistence = false
+
+# SOCKET.IO Configuration
+socketPost = 33333
+socketCORSAddress = "http://localhost:3000"
