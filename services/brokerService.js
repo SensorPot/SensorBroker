@@ -2,14 +2,19 @@
 const fs = require('fs')
 const logger = require('../utils/logger')
 const aedes = require('../config/aedesConfig')
-const mongoose = require("./mongoService");
+//const mongoose = require("./mongoService");
 const MessageModel = require("../models/message");
-
+const io = require("./socketService");
 //endregion
 
 let brokerServer;
 let port;
-let dbConn = mongoose.connection
+//let dbConn = mongoose.connection
+let groupMessages = {};
+
+function hostGroupMessage(message) {
+    groupMessages[message.groupID] = message.timestamp + "¶" + message.payload
+}
 
 //region Configuration
 if (process.env.KeyFile !== "" && process.env.CertFile !== "") {
@@ -59,6 +64,8 @@ aedes.on('publish', async function (packet, client) {
                         payload: JSON.stringify(tempPackage.payload)
                     }
                 )
+                hostGroupMessage(message);
+
                 message.save(function (err) {
                     if (err) {
                         logger.showError('Saving Document Error: ' + err.message)
@@ -74,5 +81,9 @@ aedes.on('publish', async function (packet, client) {
 })
 
 //endregion
+
+setInterval(function () {
+    io.emit('groupMessages', groupMessages);
+}, 1000);
 
 module.exports = brokerServer;
