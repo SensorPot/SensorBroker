@@ -1,13 +1,21 @@
 {
   "name": "sensor_broker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "MQTT Broker as part of SensorPot Framework",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "Aedes",
+    "Socket.IO",
+    "MongoDB",
+    "Mongoose",
+    "Tracer",
+    "MqEmitter",
+    "Aedes Persistence"
+  ],
   "author": "Raisltin TAO",
   "license": "PRIVATE",
   "dependencies": {

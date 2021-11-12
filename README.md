@@ -31,7 +31,7 @@ server.listen(port, function () {
 })
 ```
 
-## Function
+## Aedes Events
 
 By current design, AEDES only listen on those events:
 
@@ -42,7 +42,7 @@ By current design, AEDES only listen on those events:
 To config an event listener, use the following syntax:
 `aedes.on('event', function (client) { });`
 
-## Configuration
+## Overall Configuration
 
 Copy ```env``` to ```.env``` and change it accordingly
 
@@ -86,9 +86,16 @@ TTLSubscriptions = 300
 concurrency = 10000
 UseMqEmitter = false
 UsePersistence = false
+
+# SOCKET.IO Configuration
+socketPost = 33333
+socketCORSAddress = "http://localhost:3000"
 ```
 
-The program initialise **MongoDB Persistence** as following:
+
+## MongoDB Persistence
+
+For multiple server instance plus multiple databases (AKA large scale), the program can initialise **MongoDB Persistence** as following:
 
 ```JavaScript
 const aedes = require('aedes')({
@@ -159,12 +166,32 @@ can be converted to
 ```
 
 If user disable **MQEmitter**, broker will store all the message into MongoDB with following **Mongoose schema**
-directly.
+directly. The message schema has SensorID, GroupID, Timestamp and payload
 
 ```js
 const messageSchema = new mongoose.Schema({
     sensorID: Number,
+    groupID: Number,
     timestamp: String,
     payload: String
 });
 ```
+
+## Socket.IO and related details
+
+When app.js initialised, the system will create a Socket.IO instance by execute
+
+```js
+const io = require("socket.io")(httpServer, {
+        cors: {
+            origin: process.env.socketCORSAddress,
+            methods: ["GET", "POST"]
+        }
+    }
+);
+```
+
+When users (mainly browsers currently) connected to this server,
+The server will then send socket message (one message for one group) to them every 1 second. (just few KB in size)
+
+**The cors address (env.socketCORSAddress) need correct configured before start the server.** Otherwise the clients will keep getting CORS warning with no data attached.

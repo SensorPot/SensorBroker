@@ -1,10 +1,10 @@
 const logger = require("../utils/logger");
 const httpServer = require("http").createServer();
 const io = require("socket.io")(httpServer, {
-    cors: {
-        origin: process.env.socketCORSAddress,
-        methods: ["GET", "POST"]
-    }
+        cors: {
+            origin: process.env.socketCORSAddress,
+            methods: ["GET", "POST"]
+        }
     }
 );
 

@@ -8,16 +8,19 @@ if (process.env.MongoDBUser !== "") {
     logger.showDebug("Cannot Found Mongo DB credential, Using Direct Connection")
 }
 
-//*** Define Aedes Service
-//*** MQ mqEmitter, will save documents in pubsub, otherwise goes to collection: messages
-//*** Persistence: MongoDB Persistence
+/*** Define Aedes Service
+ *** MQ mqEmitter, will save documents in pubsub, otherwise goes to collection: messages
+ *** Persistence: MongoDB Persistence
+ ***/
 const aedesService = require('aedes')({
     id: 'SensorPotBroker',
 
     mq: process.env.UseMqEmitter === 'true' ? mongo.mqEmitter({
         url: mongo.mongoDBAddress,
     }) : null,
+
     concurrency: process.env.concurrency,
+
     persistence: process.env.UsePersistence === 'true' ? process.env.MongoDBUser !== "" ? mongo.mongoPersistence({
             url: mongo.mongoDBAddress,
             mongoOptions: {
